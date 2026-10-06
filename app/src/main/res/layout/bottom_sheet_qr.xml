@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/qrBottomSheetContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Drag Handle Indicator -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_code_box" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qr_title"
+        android:textColor="@color/pocket_on_surface"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:maxWidth="300dp"
+        android:text="@string/qr_subtitle"
+        android:textColor="@color/pocket_on_surface_variant"
+        android:textSize="13sp" />
+
+    <!-- QR Code Container (with clean contrast padding) -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/pocket_outline"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/imgQrCode"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_margin="12dp"
+            android:contentDescription="@string/action_qr_code" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- URL Text Display Box -->
+    <TextView
+        android:id="@+id/txtQrUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_code_box"
+        android:ellipsize="middle"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:padding="12dp"
+        android:singleLine="true"
+        android:text="https://..."
+        android:textColor="@color/pocket_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- Action Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnQrCopy"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/pocket_surface_variant"
+            android:text="@string/action_copy_url"
+            android:textAllCaps="false"
+            android:textColor="@color/pocket_on_surface"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_content_copy"
+            app:iconTint="@color/pocket_on_surface" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnQrShare"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/pocket_surface_variant"
+            android:text="@string/action_share"
+            android:textAllCaps="false"
+            android:textColor="@color/pocket_on_surface"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_share"
+            app:iconTint="@color/pocket_on_surface" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnQrOpen"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/pocket_primary_container"
+            android:text="@string/action_open_browser"
+            android:textAllCaps="false"
+            android:textColor="@color/pocket_on_primary_container"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_open_in_browser"
+            app:iconTint="@color/pocket_on_primary_container" />
+    </LinearLayout>
+
+</LinearLayout>

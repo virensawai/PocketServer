@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand / Primary Colors (Deep Electric Blue) -->
+    <color name="pocket_primary">#3B82F6</color>
+    <color name="pocket_primary_variant">#1D4ED8</color>
+    <color name="pocket_on_primary">#FFFFFF</color>
+    <color name="pocket_primary_container">#1E3A8A</color>
+    <color name="pocket_on_primary_container">#DBEAFE</color>
+
+    <!-- Secondary / Accent (Cyan / Teal) -->
+    <color name="pocket_secondary">#06B6D4</color>
+    <color name="pocket_on_secondary">#000000</color>
+    <color name="pocket_secondary_container">#164E63</color>
+    <color name="pocket_on_secondary_container">#CFFAFE</color>
+
+    <!-- Background and Surfaces (Slate 900 / 800) -->
+    <color name="pocket_background">#0F172A</color>
+    <color name="pocket_surface">#1E293B</color>
+    <color name="pocket_surface_variant">#334155</color>
+    <color name="pocket_on_surface">#F8FAFC</color>
+    <color name="pocket_on_surface_variant">#94A3B8</color>
+    <color name="pocket_card_inner">#0B1120</color>
+    <color name="pocket_outline">#334155</color>
+    <color name="pocket_outline_variant">#1E293B</color>
+
+    <!-- Status Colors -->
+    <color name="status_live">#10B981</color>
+    <color name="status_live_bg">#064E3B</color>
+    <color name="status_connecting">#F59E0B</color>
+    <color name="status_connecting_bg">#78350F</color>
+    <color name="status_reconnecting">#F97316</color>
+    <color name="status_reconnecting_bg">#7C2D12</color>
+    <color name="status_stopped">#64748B</color>
+    <color name="status_stopped_bg">#1E293B</color>
+    <color name="status_failed">#EF4444</color>
+    <color name="status_failed_bg">#7F1D1D</color>
+    <color name="status_network_lost">#E11D48</color>
+    <color name="status_network_lost_bg">#881337</color>
+
+    <!-- HTTP Method & Status Badges -->
+    <color name="badge_get">#10B981</color>
+    <color name="badge_get_bg">#064E3B</color>
+    <color name="badge_head">#3B82F6</color>
+    <color name="badge_head_bg">#1E3A8A</color>
+    <color name="badge_post">#8B5CF6</color>
+    <color name="badge_post_bg">#4C1D95</color>
+    <color name="badge_2xx">#10B981</color>
+    <color name="badge_3xx">#06B6D4</color>
+    <color name="badge_4xx">#F59E0B</color>
+    <color name="badge_5xx">#EF4444</color>
+
+    <!-- Common Utilities -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider_color">#334155</color>
+</resources>

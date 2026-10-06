@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PocketServer" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary Brand Colors -->
+        <item name="colorPrimary">@color/pocket_primary</item>
+        <item name="colorOnPrimary">@color/pocket_on_primary</item>
+        <item name="colorPrimaryContainer">@color/pocket_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/pocket_on_primary_container</item>
+
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">@color/pocket_secondary</item>
+        <item name="colorOnSecondary">@color/pocket_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/pocket_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/pocket_on_secondary_container</item>
+
+        <!-- Surfaces and Backgrounds -->
+        <item name="android:windowBackground">@color/pocket_background</item>
+        <item name="colorSurface">@color/pocket_surface</item>
+        <item name="colorOnSurface">@color/pocket_on_surface</item>
+        <item name="colorSurfaceVariant">@color/pocket_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/pocket_on_surface_variant</item>
+        <item name="colorOutline">@color/pocket_outline</item>
+
+        <!-- System Bars (Modern Edge-to-Edge Dark Slate) -->
+        <item name="android:statusBarColor">@color/pocket_background</item>
+        <item name="android:navigationBarColor">@color/pocket_surface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- Component Overrides -->
+        <item name="materialCardViewStyle">@style/Widget.PocketServer.CardView</item>
+        <item name="bottomNavigationStyle">@style/Widget.PocketServer.BottomNavigationView</item>
+    </style>
+
+    <style name="Widget.PocketServer.CardView" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/pocket_surface</item>
+        <item name="strokeColor">@color/pocket_outline</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.PocketServer.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/pocket_surface</item>
+        <item name="itemIconTint">@color/selector_nav_tint</item>
+        <item name="itemTextColor">@color/selector_nav_tint</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.PocketServer.NavIndicator</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <style name="Widget.PocketServer.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/pocket_primary_container</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    </style>
+
+    <!-- Bottom Sheet Dialog Theme -->
+    <style name="Theme.PocketServer.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.PocketServer.BottomSheet</item>
+    </style>
+
+    <style name="Widget.PocketServer.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Large</item>
+    </style>
+</resources>

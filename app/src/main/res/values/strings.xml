@@ -1,0 +1,131 @@
+<resources>
+    <string name="app_name">PocketServer</string>
+    <string name="app_tagline">Turn Your Android Phone Into a Public Web Server</string>
+    <string name="version_label">Version 1.0.0</string>
+
+    <!-- Navigation Tabs -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_deployments">Deployments</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Notification Channels -->
+    <string name="notification_channel_service_name">PocketServer Service</string>
+    <string name="notification_channel_service_desc">Ongoing notification indicating active web server and tunnel status</string>
+    <string name="notification_channel_alerts_name">PocketServer Alerts</string>
+    <string name="notification_channel_alerts_desc">Alerts for data usage limits and server connection issues</string>
+
+    <!-- Actions & Buttons -->
+    <string name="action_stop">Stop Server</string>
+    <string name="action_restart">Restart</string>
+    <string name="action_deploy">Deploy</string>
+    <string name="action_new_deployment">New Deployment</string>
+    <string name="action_open_browser">Open</string>
+    <string name="action_copy_url">Copy URL</string>
+    <string name="action_qr_code">QR Code</string>
+    <string name="action_share">Share</string>
+    <string name="action_select_folder">Select Website Folder</string>
+    <string name="action_redeploy">Redeploy</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_register">Create Account</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="action_skip_local">Continue in Local Mode</string>
+    <string name="action_apply">Apply Settings</string>
+
+    <!-- Status Labels -->
+    <string name="status_live">LIVE</string>
+    <string name="status_connecting">CONNECTING</string>
+    <string name="status_reconnecting">RECONNECTING</string>
+    <string name="status_starting">STARTING</string>
+    <string name="status_stopped">STOPPED</string>
+    <string name="status_failed">FAILED</string>
+    <string name="status_network_lost">NETWORK LOST</string>
+    <string name="notification_title_running">PocketServer Active</string>
+    <string name="notification_status_live">Live</string>
+    <string name="notification_status_connecting">Connecting</string>
+    <string name="notification_status_reconnecting">Reconnecting</string>
+    <string name="notification_status_network_lost">Network Lost</string>
+    <string name="notification_status_stopped">Stopped</string>
+    <string name="notification_status_failed">Failed</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_hero_title">Active Deployment</string>
+    <string name="dashboard_no_deployment_title">No Server Running</string>
+    <string name="dashboard_no_deployment_desc">Select a local directory with index.html to turn your device into a live web server.</string>
+    <string name="metric_requests">Requests</string>
+    <string name="metric_traffic">Traffic</string>
+    <string name="metric_streams">Active Streams</string>
+    <string name="metric_uptime">Uptime</string>
+    <string name="live_logs_header">Live HTTP Traffic</string>
+    <string name="no_requests_yet">Waiting for inbound HTTP requests…</string>
+    <string name="mode_public">Public WSS Tunnel</string>
+    <string name="mode_local">Local Wi-Fi Network</string>
+    <string name="copied_to_clipboard">URL copied to clipboard!</string>
+
+    <!-- New Deployment Screen -->
+    <string name="new_deployment_title">New Deployment</string>
+    <string name="choose_folder_prompt">Choose a folder containing your website assets (HTML, CSS, JS).</string>
+    <string name="validation_success">Valid static project: index.html found (%1$d files)</string>
+    <string name="validation_error_no_index">Missing index.html. A static website project requires an index.html file in the root directory.</string>
+    <string name="project_name_label">Project Name</string>
+    <string name="project_name_hint">e.g. portfolio, landing-page</string>
+    <string name="hosting_mode_label">Hosting Mode</string>
+    <string name="mode_public_title">Public Internet (Cloud Relay)</string>
+    <string name="mode_public_desc">Accessible globally from any device via secure HTTPS WSS tunnel.</string>
+    <string name="mode_local_title">Local Network Only</string>
+    <string name="mode_local_desc">Accessible only by devices on the same Wi-Fi network.</string>
+    <string name="subdomain_label">Preferred Subdomain (Optional)</string>
+    <string name="subdomain_hint">e.g. my-site</string>
+    <string name="port_label">Local Port</string>
+    <string name="port_hint">8080</string>
+    <string name="spa_fallback_title">Single-Page App (SPA) Fallback</string>
+    <string name="spa_fallback_desc">Route unknown paths to index.html for React, Vue, Vite, and Next export apps.</string>
+    <string name="keep_awake_title">Keep Awake While Locked</string>
+    <string name="keep_awake_desc">Prevent OS from suspending the server when device screen locks.</string>
+    <string name="btn_deploy_now">Deploy Website Now</string>
+
+    <!-- Deployments History Screen -->
+    <string name="deployments_title">Deployments</string>
+    <string name="no_deployments_title">No Deployment History</string>
+    <string name="no_deployments_desc">Websites you deploy will appear here for fast one-tap redeployment.</string>
+
+    <!-- QR Code Bottom Sheet -->
+    <string name="qr_title">Scan to Open</string>
+    <string name="qr_subtitle">Anyone on the network can scan this code to browse your phone-hosted website.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Server Settings</string>
+    <string name="section_network_power">Network &amp; Power</string>
+    <string name="network_policy_label">Network Policy</string>
+    <string name="network_policy_wifi_and_mobile">Wi-Fi + Mobile Data (Cellular)</string>
+    <string name="network_policy_wifi_only">Wi-Fi Only (Pause on Cellular)</string>
+    <string name="battery_card_title">OEM Battery Guidance</string>
+    <string name="battery_card_desc">Some device manufacturers (Samsung, Xiaomi, OnePlus) may stop background apps. Add PocketServer to battery optimization exemptions for uninterrupted hosting.</string>
+    <string name="battery_unrestricted">Battery Unrestricted: Optimal background execution for continuous hosting.</string>
+    <string name="battery_restricted">Battery Restricted: Tap here to exempt PocketServer from OS battery limits.</string>
+    <string name="section_data_limits">Data Limits</string>
+    <string name="data_warning_label">Warning Threshold: 500 MB</string>
+    <string name="data_limit_label">Auto-Stop Threshold: 2 GB</string>
+    <string name="section_cloud_relay">Cloud Gateway</string>
+    <string name="relay_url_label">Relay Gateway Host</string>
+    <string name="api_url_label">Control API Endpoint</string>
+    <string name="section_account">Account &amp; Session</string>
+    <string name="logged_in_as">Signed in as %s</string>
+    <string name="not_logged_in">Guest / Local mode (Not signed in)</string>
+
+    <!-- Auth Screen -->
+    <string name="auth_welcome">Welcome to PocketServer</string>
+    <string name="auth_subtitle">Sign in to claim persistent public subdomains and manage devices.</string>
+    <string name="tab_sign_in">Sign In</string>
+    <string name="tab_register">Register</string>
+    <string name="email_label">Email Address</string>
+    <string name="email_hint">developer@example.com</string>
+    <string name="password_label">Password</string>
+    <string name="password_hint">••••••••</string>
+
+    <!-- Data Limit Alerts -->
+    <string name="data_warning_title">Data Warning</string>
+    <string name="data_warning_message">PocketServer has transferred %s of mobile/network data.</string>
+    <string name="data_limit_title">Data Limit Exceeded</string>
+    <string name="data_limit_message">Hosting stopped automatically after reaching %s data transfer limit.</string>
+</resources>
