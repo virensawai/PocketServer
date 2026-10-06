@@ -43,6 +43,7 @@ public class DeploymentManager {
             new MutableLiveData<>(new java.util.ArrayList<>());
     private final MutableLiveData<Boolean> keepAwakeEnabled = new MutableLiveData<>(false);
 
+    private Deployment currentDeployment;
     private DeploymentConfig currentConfig;
 
     private DeploymentManager(@NonNull Context appContext) {
@@ -59,6 +60,11 @@ public class DeploymentManager {
     @NonNull
     public LiveData<Deployment> getActiveDeployment() {
         return activeDeployment;
+    }
+
+    @Nullable
+    public synchronized Deployment getActiveDeploymentSnapshot() {
+        return currentDeployment;
     }
 
     @NonNull
@@ -107,6 +113,7 @@ public class DeploymentManager {
                 0,
                 null
         );
+        this.currentDeployment = newDeployment;
         this.activeDeployment.postValue(newDeployment);
         this.deploymentState.postValue(DeploymentState.STARTING);
 
@@ -134,9 +141,9 @@ public class DeploymentManager {
         }
 
         // Optimistically update if service was already dead
-        Deployment current = activeDeployment.getValue();
-        if (current != null && current.getState() != DeploymentState.STOPPED) {
-            this.activeDeployment.postValue(current.withState(DeploymentState.STOPPED, null));
+        if (currentDeployment != null && currentDeployment.getState() != DeploymentState.STOPPED) {
+            this.currentDeployment = currentDeployment.withState(DeploymentState.STOPPED, null);
+            this.activeDeployment.postValue(this.currentDeployment);
             this.deploymentState.postValue(DeploymentState.STOPPED);
         }
     }
@@ -174,27 +181,52 @@ public class DeploymentManager {
     // --- Service Bridge Callbacks ---
 
     public synchronized void notifyStateChanged(@NonNull DeploymentState newState, @Nullable String errorMessage) {
-        Deployment current = activeDeployment.getValue();
-        if (current != null) {
-            Deployment updated = current.withState(newState, errorMessage);
-            this.activeDeployment.postValue(updated);
+        if (currentDeployment != null) {
+            this.currentDeployment = currentDeployment.withState(newState, errorMessage);
+            this.activeDeployment.postValue(this.currentDeployment);
         }
         this.deploymentState.postValue(newState);
     }
 
     public synchronized void notifyUrlsAssigned(@Nullable String localUrl, @Nullable String publicUrl) {
-        Deployment current = activeDeployment.getValue();
-        if (current != null) {
-            Deployment updated = current.withUrls(localUrl, publicUrl);
-            this.activeDeployment.postValue(updated);
+        if (currentDeployment != null) {
+            this.currentDeployment = currentDeployment.withUrls(localUrl, publicUrl);
+            this.activeDeployment.postValue(this.currentDeployment);
         }
+    }
+
+    /**
+     * Atomically assigns the runtime network URLs and transitions state to LIVE.
+     * Prevents LiveData.postValue() dropping URL assignments during rapid lifecycle transitions.
+     */
+    public synchronized void notifyDeploymentLive(@NonNull String localUrl, @Nullable String publicUrl) {
+        if (currentDeployment != null) {
+            this.currentDeployment = currentDeployment
+                    .withUrls(localUrl, publicUrl)
+                    .withState(DeploymentState.LIVE, null);
+            this.activeDeployment.postValue(this.currentDeployment);
+        } else if (currentConfig != null) {
+            this.currentDeployment = new Deployment(
+                    "dep_" + UUID.randomUUID().toString().substring(0, 8),
+                    currentConfig,
+                    DeploymentState.LIVE,
+                    localUrl,
+                    publicUrl,
+                    new DeploymentTelemetry(),
+                    System.currentTimeMillis(),
+                    0,
+                    null
+            );
+            this.activeDeployment.postValue(this.currentDeployment);
+        }
+        this.deploymentState.postValue(DeploymentState.LIVE);
     }
 
     public synchronized void notifyTelemetryUpdated(@NonNull DeploymentTelemetry newTelemetry) {
         this.telemetry.postValue(newTelemetry);
-        Deployment current = activeDeployment.getValue();
-        if (current != null) {
-            this.activeDeployment.postValue(current.withTelemetry(newTelemetry));
+        if (currentDeployment != null) {
+            this.currentDeployment = currentDeployment.withTelemetry(newTelemetry);
+            this.activeDeployment.postValue(this.currentDeployment);
         }
     }
 

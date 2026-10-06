@@ -61,11 +61,18 @@ public class NewDeploymentActivity extends AppCompatActivity {
     }
 
     private void setupHostingModeRadio() {
+        // Local mode is default: disable subdomain input initially
+        binding.inputLayoutSubdomain.setEnabled(false);
+        binding.inputLayoutSubdomain.setAlpha(0.5f);
+
         binding.radioGroupHostingMode.setOnCheckedChangeListener((group, checkedId) -> {
             boolean isPublic = (checkedId == R.id.radioPublic);
             binding.inputLayoutSubdomain.setEnabled(isPublic);
             binding.inputLayoutSubdomain.setAlpha(isPublic ? 1.0f : 0.5f);
         });
+
+        binding.txtDescPublic.setOnClickListener(v -> binding.radioPublic.setChecked(true));
+        binding.txtDescLocal.setOnClickListener(v -> binding.radioLocal.setChecked(true));
     }
 
     private void setupListeners() {

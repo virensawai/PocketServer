@@ -190,15 +190,17 @@
                             android:id="@+id/radioPublic"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:checked="true"
                             android:text="@string/mode_public_title"
                             android:textColor="@color/pocket_on_surface"
                             app:buttonTint="@color/pocket_primary" />
 
                         <TextView
+                            android:id="@+id/txtDescPublic"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="32dp"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:text="@string/mode_public_desc"
                             android:textColor="@color/pocket_on_surface_variant"
                             android:textSize="12sp" />
@@ -208,14 +210,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:checked="true"
                             android:text="@string/mode_local_title"
                             android:textColor="@color/pocket_on_surface"
                             app:buttonTint="@color/pocket_primary" />
 
                         <TextView
+                            android:id="@+id/txtDescLocal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="32dp"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:text="@string/mode_local_desc"
                             android:textColor="@color/pocket_on_surface_variant"
                             android:textSize="12sp" />

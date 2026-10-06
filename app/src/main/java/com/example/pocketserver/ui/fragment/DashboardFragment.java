@@ -176,6 +176,12 @@ public class DashboardFragment extends Fragment {
             binding.btnCopyUrl.setEnabled(true);
             binding.btnQrCode.setEnabled(true);
             binding.btnOpenBrowser.setEnabled(true);
+        } else if (deployment.getState() == DeploymentState.FAILED) {
+            String errorMsg = deployment.getErrorMessage() != null ? deployment.getErrorMessage() : "Deployment failed";
+            binding.txtDisplayUrl.setText(errorMsg);
+            binding.btnCopyUrl.setEnabled(false);
+            binding.btnQrCode.setEnabled(false);
+            binding.btnOpenBrowser.setEnabled(false);
         } else {
             binding.txtDisplayUrl.setText("Assigning address...");
             binding.btnCopyUrl.setEnabled(false);

@@ -79,6 +79,7 @@ public class ServerForegroundService extends Service {
         deploymentManager = DeploymentManager.getInstance(this);
 
         setupNetworkListener();
+        startForegroundWithNotification();
     }
 
     @Nullable
@@ -129,6 +130,8 @@ public class ServerForegroundService extends Service {
     }
 
     private void handleStartAction(@NonNull Intent intent) {
+        transitionState(DeploymentState.STARTING, null);
+
         DeploymentConfig config;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             config = intent.getSerializableExtra(EXTRA_CONFIG, DeploymentConfig.class);
@@ -206,6 +209,7 @@ public class ServerForegroundService extends Service {
             currentLocalUrl = "http://" + localIp + ":" + port;
 
             if (config.getHostingMode() == HostingMode.PUBLIC) {
+                deploymentManager.notifyUrlsAssigned(currentLocalUrl, null);
                 transitionState(DeploymentState.CONNECTING, null);
                 String relayUrl = LimitsConfig.DEFAULT_RELAY_URL;
                 String deploymentId = intent.getStringExtra(EXTRA_DEPLOYMENT_ID);
@@ -230,8 +234,7 @@ public class ServerForegroundService extends Service {
                             @Override
                             public void onRegistered(@NonNull String publicUrl, @NonNull String assignedHostname) {
                                 currentPublicUrl = publicUrl;
-                                deploymentManager.notifyUrlsAssigned(currentLocalUrl, currentPublicUrl);
-                                transitionState(DeploymentState.LIVE, null);
+                                transitionToLive(currentLocalUrl, currentPublicUrl);
                                 updateForegroundNotification();
                             }
 
@@ -262,8 +265,7 @@ public class ServerForegroundService extends Service {
             } else {
                 // Local Mode: directly transition to LIVE
                 currentPublicUrl = null;
-                deploymentManager.notifyUrlsAssigned(currentLocalUrl, null);
-                transitionState(DeploymentState.LIVE, null);
+                transitionToLive(currentLocalUrl, null);
             }
 
             // 5. Start Network Monitoring
@@ -291,6 +293,7 @@ public class ServerForegroundService extends Service {
 
     private void handleRestartAction(@NonNull Intent intent) {
         stopServerInternal();
+        transitionState(DeploymentState.STOPPED, null);
         handleStartAction(intent);
     }
 
@@ -346,14 +349,14 @@ public class ServerForegroundService extends Service {
                     if (serverAdapter != null && activeConfig != null) {
                         String localIp = NetworkUtils.getLocalIpAddress();
                         currentLocalUrl = "http://" + localIp + ":" + activeConfig.getLocalPort();
-                        deploymentManager.notifyUrlsAssigned(currentLocalUrl, currentPublicUrl);
                     }
                     if (activeConfig != null && activeConfig.getHostingMode() == HostingMode.PUBLIC) {
+                        deploymentManager.notifyUrlsAssigned(currentLocalUrl, currentPublicUrl);
                         if (tunnelClient != null && !tunnelClient.isConnected()) {
                             tunnelClient.connect();
                         }
                     } else {
-                        transitionState(DeploymentState.LIVE, null);
+                        transitionToLive(currentLocalUrl, null);
                     }
                     updateForegroundNotification();
                 }
@@ -377,6 +380,16 @@ public class ServerForegroundService extends Service {
         });
     }
 
+    private void transitionToLive(@NonNull String localUrl, @Nullable String publicUrl) {
+        if (currentState.canTransitionTo(DeploymentState.LIVE)) {
+            this.currentState = DeploymentState.LIVE;
+            powerLockManager.onDeploymentStateChanged(DeploymentState.LIVE);
+            deploymentManager.notifyDeploymentLive(localUrl, publicUrl);
+        } else {
+            Log.w(TAG, "Illegal state transition attempted: " + currentState + " -> LIVE");
+        }
+    }
+
     private void transitionState(@NonNull DeploymentState newState, @Nullable String errorMessage) {
         if (currentState.canTransitionTo(newState)) {
             this.currentState = newState;
@@ -389,7 +402,7 @@ public class ServerForegroundService extends Service {
 
     private void startForegroundWithNotification() {
         Notification notification = notificationHelper.buildServiceNotification(
-                deploymentManager.getActiveDeployment().getValue(),
+                deploymentManager.getActiveDeploymentSnapshot(),
                 trackingHandler != null ? trackingHandler.getSnapshot() : new DeploymentTelemetry()
         );
 
@@ -407,7 +420,7 @@ public class ServerForegroundService extends Service {
     private void updateForegroundNotification() {
         if (currentState.isActive()) {
             Notification notification = notificationHelper.buildServiceNotification(
-                    deploymentManager.getActiveDeployment().getValue(),
+                    deploymentManager.getActiveDeploymentSnapshot(),
                     trackingHandler != null ? trackingHandler.getSnapshot() : null
             );
             notificationHelper.createNotificationChannels();

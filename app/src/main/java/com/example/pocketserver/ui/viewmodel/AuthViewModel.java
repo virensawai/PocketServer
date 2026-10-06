@@ -129,6 +129,7 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
     public void skipLocalMode() {
+        credentialStore.saveSession("guest_local_token", "device_user", "local@pocketserver.dev");
         authSuccess.setValue(true);
     }
 
