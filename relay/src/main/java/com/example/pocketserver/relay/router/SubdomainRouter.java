@@ -106,6 +106,9 @@ public class SubdomainRouter extends SimpleChannelInboundHandler<FullHttpRequest
         }
 
         boolean isBase = cleanHost.equals(base) || cleanHost.equals("localhost") || cleanHost.equals("127.0.0.1");
+        if (tunnelRegistry.getActiveTunnelCount() > 0 && uri.equals("/")) {
+            return false;
+        }
         return isBase && (uri.equals("/") || uri.equals("/health") || uri.equals("/status"));
     }
 

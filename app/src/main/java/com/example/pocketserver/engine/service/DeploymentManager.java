@@ -99,7 +99,8 @@ public class DeploymentManager {
         this.recentRequests.postValue(new java.util.ArrayList<>());
 
         String deploymentId = "dep_" + UUID.randomUUID().toString().substring(0, 8);
-        DeploymentTelemetry initialTelemetry = new DeploymentTelemetry();
+        long now = System.currentTimeMillis();
+        DeploymentTelemetry initialTelemetry = new DeploymentTelemetry(0, 0, 0, now, 0);
         this.telemetry.postValue(initialTelemetry);
 
         Deployment newDeployment = new Deployment(
@@ -212,7 +213,7 @@ public class DeploymentManager {
                     DeploymentState.LIVE,
                     localUrl,
                     publicUrl,
-                    new DeploymentTelemetry(),
+                    new DeploymentTelemetry(0, 0, 0, System.currentTimeMillis(), 0),
                     System.currentTimeMillis(),
                     0,
                     null

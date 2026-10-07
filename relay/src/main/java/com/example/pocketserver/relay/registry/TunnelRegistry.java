@@ -145,6 +145,14 @@ public class TunnelRegistry {
             return tunnel;
         }
 
+        // 4. Fallback: if single active tunnel is registered, route directly to it
+        if (channelIdToTunnelMap.size() == 1) {
+            ActiveTunnel single = channelIdToTunnelMap.values().iterator().next();
+            if (single != null && single.isOpen()) {
+                return single;
+            }
+        }
+
         return null;
     }
 

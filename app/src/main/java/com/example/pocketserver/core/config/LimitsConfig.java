@@ -46,8 +46,8 @@ public final class LimitsConfig {
     /** WebSocket heartbeat interval in seconds: 15s */
     public static final int WEBSOCKET_HEARTBEAT_INTERVAL_SECONDS = 15;
 
-    /** Default cloud relay gateway endpoint */
-    public static final String DEFAULT_RELAY_URL = "wss://relay.pocketserver.dev/tunnel";
+    /** Default cloud relay gateway endpoint (pointing to local PC test relay) */
+    public static final String DEFAULT_RELAY_URL = "ws://localhost:8088/tunnel";
 
     /** Default control plane REST API base URL */
     public static final String DEFAULT_API_BASE_URL = "https://api.pocketserver.dev";

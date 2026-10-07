@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,15 @@ public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
     private MainViewModel viewModel;
     private RequestLogAdapter logAdapter;
+
+    private final Handler uptimeHandler = new Handler(Looper.getMainLooper());
+    private final Runnable uptimeTicker = new Runnable() {
+        @Override
+        public void run() {
+            updateUptime();
+            uptimeHandler.postDelayed(this, 1000);
+        }
+    };
 
     @Nullable
     @Override
@@ -117,8 +128,25 @@ public class DashboardFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (viewModel.getDeploymentState().getValue() == DeploymentState.LIVE) {
+            startUptimeTicker();
+        } else {
+            updateUptime();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopUptimeTicker();
+    }
+
     private void updateStateUI(@NonNull DeploymentState state) {
         if (state == DeploymentState.STOPPED && viewModel.getActiveDeployment().getValue() == null) {
+            stopUptimeTicker();
             binding.cardActiveDeployment.setVisibility(View.GONE);
             binding.cardIdleState.setVisibility(View.VISIBLE);
             return;
@@ -133,6 +161,7 @@ public class DashboardFragment extends Fragment {
                 binding.txtStatusBadge.setBackgroundResource(R.drawable.bg_status_live);
                 binding.btnStopServer.setEnabled(true);
                 binding.btnRestartServer.setEnabled(true);
+                startUptimeTicker();
                 break;
             case CONNECTING:
             case RECONNECTING:
@@ -145,12 +174,16 @@ public class DashboardFragment extends Fragment {
                 binding.txtStatusBadge.setBackgroundResource(R.drawable.bg_status_failed);
                 binding.btnStopServer.setEnabled(false);
                 binding.btnRestartServer.setEnabled(true);
+                stopUptimeTicker();
+                binding.txtMetricUptime.setText("00:00");
                 break;
             case STOPPED:
             default:
                 binding.txtStatusBadge.setBackgroundResource(R.drawable.bg_status_stopped);
                 binding.btnStopServer.setEnabled(false);
                 binding.btnRestartServer.setEnabled(true);
+                stopUptimeTicker();
+                binding.txtMetricUptime.setText("00:00");
                 break;
         }
     }
@@ -190,12 +223,29 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    private void updateTelemetryUI(@NonNull DeploymentTelemetry telemetry) {
-        binding.txtMetricRequests.setText(String.valueOf(telemetry.getRequestCount()));
-        binding.txtMetricTraffic.setText(formatBytes(telemetry.getBytesTransferred()));
-        binding.txtMetricStreams.setText(String.valueOf(telemetry.getActiveStreams()));
+    private void startUptimeTicker() {
+        uptimeHandler.removeCallbacks(uptimeTicker);
+        uptimeHandler.post(uptimeTicker);
+    }
 
-        long startedAt = telemetry.getStartedAtTimestamp();
+    private void stopUptimeTicker() {
+        uptimeHandler.removeCallbacks(uptimeTicker);
+    }
+
+    private void updateUptime() {
+        if (binding == null) return;
+        Deployment deployment = viewModel.getActiveDeployment().getValue();
+        DeploymentState state = viewModel.getDeploymentState().getValue();
+        if (state != DeploymentState.LIVE || deployment == null) {
+            binding.txtMetricUptime.setText("00:00");
+            return;
+        }
+
+        DeploymentTelemetry telemetry = viewModel.getTelemetry().getValue();
+        long startedAt = (telemetry != null && telemetry.getStartedAtTimestamp() > 0)
+                ? telemetry.getStartedAtTimestamp()
+                : deployment.getCreatedAt();
+
         if (startedAt > 0) {
             long elapsedSeconds = Math.max(0, (System.currentTimeMillis() - startedAt) / 1000);
             long minutes = elapsedSeconds / 60;
@@ -212,6 +262,14 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    private void updateTelemetryUI(@NonNull DeploymentTelemetry telemetry) {
+        if (binding == null) return;
+        binding.txtMetricRequests.setText(String.valueOf(telemetry.getRequestCount()));
+        binding.txtMetricTraffic.setText(formatBytes(telemetry.getBytesTransferred()));
+        binding.txtMetricStreams.setText(String.valueOf(telemetry.getActiveStreams()));
+        updateUptime();
+    }
+
     private String formatBytes(long bytes) {
         if (bytes < 1024) {
             return bytes + " B";
@@ -225,6 +283,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        stopUptimeTicker();
         binding = null;
     }
 }

@@ -14,3 +14,4 @@ relay/build/
 .cxx
 *.apk
 *.aab
+.tools/
